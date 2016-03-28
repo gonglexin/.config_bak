@@ -46,6 +46,7 @@ Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'thinca/vim-ref'
 Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
+Plug 'elmcast/elm-vim'
 Plug 'janko-m/vim-test'
 
 " Plug 'Shougo/neocomplete.vim'
