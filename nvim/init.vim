@@ -12,9 +12,8 @@ Plug 'tpope/vim-sensible'
 " Navigation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'szw/vim-ctrlspace'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Shougo/unite.vim'
+" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/denite.nvim'
 
 " Moving
 Plug 'Lokaltog/vim-easymotion'
@@ -38,16 +37,20 @@ Plug 'tomtom/tcomment_vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ap/vim-css-color'
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'thinca/vim-ref'
-Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
+" Plug 'thinca/vim-ref'
+" Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'slashmili/alchemist.vim'
+Plug 'Shougo/echodoc.vim'
 Plug 'elmcast/elm-vim'
 Plug 'janko-m/vim-test'
+Plug 'skywind3000/asyncrun.vim'
 
 " Plug 'Shougo/neocomplete.vim'
 " Plug 'Shougo/neosnippet'
@@ -97,6 +100,7 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+set cmdheight=2
 
 " Jump to the last know position in a file after opening it
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -201,25 +205,25 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Unite
-nnoremap <leader>x :Unite file_rec/async<CR>
-nnoremap <silent> <leader><space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-nnoremap <silent> <leader>f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
-let g:unite_source_history_yank_enable = 1
-nnoremap <leader>y :Unite history/yank<cr>
-nnoremap <space>/ :Unite grep:.<CR>
-nnoremap <leader>b :Unite -quick-match buffer<CR>
-nnoremap <silent> <leader>g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+" Denite
+nnoremap <leader>x :Denite file_rec/async<CR>
+nnoremap <silent> <leader><space> :<C-u>Denite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+nnoremap <silent> <leader>f :<C-u>Denite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+let g:denite_source_history_yank_enable = 1
+nnoremap <leader>y :Denite history/yank<cr>
+nnoremap <space>/ :Denite grep:.<CR>
+nnoremap <leader>b :Denite -quick-match buffer<CR>
+nnoremap <silent> <leader>g :<C-u>Denite grep:. -buffer-name=search-buffer<CR>
 if executable('pt')
-  let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_grep_encoding = 'utf-8'
+  let g:denite_source_grep_command = 'pt'
+  let g:denite_source_grep_default_opts = '--nogroup --nocolor'
+  let g:denite_source_grep_recursive_opt = ''
+  let g:denite_source_grep_encoding = 'utf-8'
 elseif executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_grep_encoding = 'utf-8'
+  let g:denite_source_grep_command = 'ag'
+  let g:denite_source_grep_default_opts = '--nogroup --nocolor'
+  let g:denite_source_grep_recursive_opt = ''
+  let g:denite_source_grep_encoding = 'utf-8'
 endif
 
 " Zoom / Restore window
