@@ -12,7 +12,6 @@ Plug 'tpope/vim-sensible'
 " Navigation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/denite.nvim'
 
 " Moving
@@ -26,6 +25,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'molokai'
 Plug 'w0ng/vim-hybrid'
 Plug 'jnurmine/Zenburn'
+Plug 'ayu-theme/ayu-vim'
 
 " Programming
 Plug 'vim-ruby/vim-ruby'
@@ -43,8 +43,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-" Plug 'thinca/vim-ref'
-" Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'slashmili/alchemist.vim'
 Plug 'Shougo/echodoc.vim'
@@ -52,9 +50,12 @@ Plug 'elmcast/elm-vim'
 Plug 'janko-m/vim-test'
 Plug 'skywind3000/asyncrun.vim'
 
-" Plug 'Shougo/neocomplete.vim'
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
+Plug 'neomake/neomake'
+  augroup localneomake
+    autocmd! BufWritePost * Neomake
+  augroup END
+  let g:neomkae_elixir_enabled_makers = ['mix', 'credo']
+
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -75,7 +76,14 @@ filetype plugin indent on
 let mapleader = ","
 set nu
 set background=dark
-colo hybrid
+" colo hybrid
+
+" Config ayu theme
+set termguicolors
+" let ayucolor="light"
+let ayucolor="mirage"
+" let ayucolor="dark"
+colo ayu
 
 nmap <leader>s :source $MYVIMRC<CR>
 nmap <leader>e :e $MYVIMRC<CR>
@@ -104,13 +112,6 @@ set cmdheight=2
 
 " Jump to the last know position in a file after opening it
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" vim-ctrlspace
-" set hidden
-" hi CtrlSpaceSelected term=reverse ctermfg=187   guifg=#d7d7af ctermbg=23    guibg=#005f5f cterm=bold gui=bold
-" hi CtrlSpaceNormal   term=NONE    ctermfg=244   guifg=#808080 ctermbg=232   guibg=#080808 cterm=NONE gui=NONE
-" hi CtrlSpaceSearch   ctermfg=220  guifg=#ffd700 ctermbg=NONE  guibg=NONE    cterm=bold    gui=bold
-" hi CtrlSpaceStatus   ctermfg=230  guifg=#ffffd7 ctermbg=234   guibg=#1c1c1c cterm=NONE    gui=NONE
 
 " Ctrl-P
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
@@ -195,9 +196,6 @@ nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>v :TestVisit<CR>
-
-" rubocop
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 "" vim-easy-align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
