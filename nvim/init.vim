@@ -18,44 +18,30 @@ Plug 'Shougo/denite.nvim'
 Plug 'Lokaltog/vim-easymotion'
 
 " Editing
-Plug 'ervandew/supertab'
 Plug 'junegunn/vim-easy-align'
 
 " Colorscheme
-Plug 'molokai'
 Plug 'w0ng/vim-hybrid'
 Plug 'jnurmine/Zenburn'
 Plug 'ayu-theme/ayu-vim'
 
 " Programming
 Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 Plug 'tomtom/tcomment_vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ap/vim-css-color'
-Plug 'w0rp/ale'
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'slashmili/alchemist.vim'
-Plug 'Shougo/echodoc.vim'
 Plug 'elmcast/elm-vim'
 Plug 'janko-m/vim-test'
 Plug 'skywind3000/asyncrun.vim'
-
-Plug 'neomake/neomake'
-  augroup localneomake
-    autocmd! BufWritePost * Neomake
-  augroup END
-  let g:neomkae_elixir_enabled_makers = ['mix', 'credo']
-
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -158,14 +144,6 @@ autocmd FileType javascript let b:dispatch = 'node %'
 " nnoremap <leader>r :Dispatch<CR>
 nnoremap <leader>v :Copen<CR>
 
-" vim-airline
-" let g:airline_powerline_fonts=1
-let g:airline_exclude_preview = 1 " hacking vim-ctrlspace
-let g:airline_left_sep=""
-let g:airline_left_alt_sep=""
-let g:airline_right_sep=""
-let g:airline_right_alt_sep=""
-
 " vim-ruby
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
@@ -203,27 +181,6 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Denite
-nnoremap <leader>x :Denite file_rec/async<CR>
-nnoremap <silent> <leader><space> :<C-u>Denite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-nnoremap <silent> <leader>f :<C-u>Denite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
-let g:denite_source_history_yank_enable = 1
-nnoremap <leader>y :Denite history/yank<cr>
-nnoremap <space>/ :Denite grep:.<CR>
-nnoremap <leader>b :Denite -quick-match buffer<CR>
-nnoremap <silent> <leader>g :<C-u>Denite grep:. -buffer-name=search-buffer<CR>
-if executable('pt')
-  let g:denite_source_grep_command = 'pt'
-  let g:denite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:denite_source_grep_recursive_opt = ''
-  let g:denite_source_grep_encoding = 'utf-8'
-elseif executable('ag')
-  let g:denite_source_grep_command = 'ag'
-  let g:denite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:denite_source_grep_recursive_opt = ''
-  let g:denite_source_grep_encoding = 'utf-8'
-endif
-
 " Zoom / Restore window
 function! s:ZoomToggle() abort
   if exists('t:zoomed') && t:zoomed
@@ -240,5 +197,125 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <leader>z :ZoomToggle<CR>
 
-"" Deoplete
-let g:deoplete#enable_at_startup = 1
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
