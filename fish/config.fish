@@ -6,4 +6,4 @@ chruby 2.7.2
 set -gx EDITOR 'emacsclient -t'
 alias e $EDITOR
 
-set PATH /usr/local/bin .asdf/bin $PATH
+source ~/.asdf/asdf.fish
