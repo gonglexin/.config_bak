@@ -2,9 +2,10 @@ git
 htop
 mpv
 pgcli
-fish
 .isolated-storage
 nvim/.init.vim-rplugin~
 nvim/.netrwhist
 nvim/autoload
 nvim/plugged
+
+.DS_Store
